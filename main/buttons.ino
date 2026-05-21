@@ -13,3 +13,18 @@ int isBtnBottomLeftPressed(){
 int isBtnBottomRightPressed(){
     return digitalRead(buttonB2pin) == HIGH;
 }
+
+void checkBtnStates(){
+    if(isBtnBottomLeftPressed()){
+        playSound(500);
+    }
+    if(isBtnBottomRightPressed()){
+        playSound(1000);
+    }
+    if(isBtnTopLeftPressed()){
+        playSound(700);
+    }
+    if(isBtnTopRightPressed()){
+        playSound(300);
+    }
+}
