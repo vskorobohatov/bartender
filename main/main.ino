@@ -51,7 +51,7 @@ byte smileyB2[] = {
 #define buttonB1pin 4  //Define the push button B1 pin
 #define buttonB2pin 5  //Define the push button B2 pin
 
-byte screenData[8];
+byte screenBuffer[8];
 int currentScreen = 0;
 // 0 - loading
 // 1 - ready
@@ -76,37 +76,7 @@ void setup() {
 }
 
 void loop() {
-
-  int buttonA1val = digitalRead(buttonA1pin);  // check the state of the A1 button
-  if (buttonA1val == HIGH) {
-    Serial.println("Button A1 pressed!");
-  } else {
-    Serial.println("Button A1 not pressed!");
-  }
-
-  int buttonA2val = digitalRead(buttonA2pin);  // check the state of the A2 button
-  if (buttonA2val == HIGH) {
-    Serial.println("Button A2 pressed!");
-  } else {
-    Serial.println("Button A2 not pressed!");
-  }
-
-  int buttonB1val = digitalRead(buttonB1pin);  // check the state of the B1 button
-  if (buttonB1val == HIGH) {
-    Serial.println("Button B1 pressed!");
-  } else {
-    Serial.println("Button B1 not pressed!");
-  }
-
-  int buttonB2val = digitalRead(buttonB2pin);  // check the state of the B2 button
-  if (buttonB2val == HIGH) {
-    Serial.println("Button B2 pressed!");
-  } else {
-    Serial.println("Button B2 not pressed!");
-  }
-
-
-  // Wait for 100 ms
   rerender();
+  // Wait for 100 ms
   delay(100);
 }

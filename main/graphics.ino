@@ -1,12 +1,12 @@
 void clearScreen(){
     for (int i = 0; i < 8; i++){
-        screenData[i] = 0;
+        screenBuffer[i] = 0;
     }
 }
 
 void renderScreen() {
   for (int i = 0; i < 8; i++) {
-    lc.setRow(0, i, screenData[i]);
+    lc.setRow(0, i, screenBuffer[i]);
   }
 }
 
@@ -21,7 +21,7 @@ void rerender(){
     }
   }
   if(currentScreen == 1){
-    
+    generateMainScreen();
   }
   renderScreen();
 }
@@ -34,7 +34,7 @@ byte* generateLoadingFrame(){
     byte x = circleX[frame];
     byte y = circleY[frame];
 
-    screenData[y] |= (1 << (7 - x));
+    screenBuffer[y] |= (1 << (7 - x));
     
     frame++;
     
@@ -43,16 +43,22 @@ byte* generateLoadingFrame(){
     }
 }
 
-byte* generateReadyFrame(){
-    static byte frame = 0;
-    
+byte* generateMainScreen(){
     clearScreen();
+    
+    if (!isBtnTopLeftPressed()){
+        screenBuffer[0] |= (1 << 1);
+    }
 
-    screenData[y] |= (1 << (7 - x));
-    
-    frame++;
-    
-    if (frame >= 8){
-        frame = 0;
+    if (!isBtnTopRightPressed()){
+        screenBuffer[0] |= (1 << 6);
+    }
+
+    if (!isBtnBottomLeftPressed()){
+        screenBuffer[7] |= (1 << 1);
+    }
+
+    if (!isBtnBottomRightPressed()){
+        screenBuffer[7] |= (1 << 6);
     }
 }
