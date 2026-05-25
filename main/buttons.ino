@@ -15,16 +15,24 @@ int isBtnBottomRightPressed(){
 }
 
 void checkBtnStates(){
-    if(isBtnBottomLeftPressed()){
-        playSound(500);
-    }
-    if(isBtnBottomRightPressed()){
-        playSound(1000);
-    }
     if(isBtnTopLeftPressed()){
-        playSound(700);
+        playSound(50);
+        isPumpAWorking = true;
+        pumpATicksLeft = settings.durationA1;
+    }
+    if(isBtnBottomLeftPressed()){
+        playSound(50);
+        isPumpAWorking = true;
+        pumpATicksLeft = settings.durationA2;
     }
     if(isBtnTopRightPressed()){
-        playSound(300);
+        playSound(50);
+        isPumpBWorking = true;
+        pumpBTicksLeft = settings.durationB1;
+    }
+    if(isBtnBottomRightPressed()){
+        playSound(50);
+        isPumpBWorking = true;
+        pumpBTicksLeft = settings.durationB2;
     }
 }

@@ -27,6 +27,8 @@ void rerender(){
 }
 
 byte* generateLoadingFrame(){
+    const byte circleX[8] = { 3, 4, 5, 5, 4, 3, 2, 2 };
+    const byte circleY[8] = { 2, 2, 3, 4, 5, 5, 4, 3 };
     static byte frame = 0;
     
     clearScreen();
