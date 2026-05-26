@@ -42,7 +42,7 @@ int currentScreen = 0;
 // 2 - edit
 
 // Pumps states
-int pumpTickDuration = 50;
+int pumpsTickDuration = 500;
 bool isPumpAWorking = false;
 int pumpATotalTicks = 0;
 int pumpATicksLeft = 0;
@@ -52,7 +52,7 @@ int pumpBTicksLeft = 0;
 
 // Loading states
 int loadingTime = 0;
-int loadingDelay = 25;
+int loadingDelay = 16;
 
 // Buttons start press time
 unsigned long btnA1MsStart = 0;
@@ -63,7 +63,7 @@ unsigned long btnB2MsStart = 0;
 // Button to edit
 int buttonToEdit;
 
-MySettings settings = { defaultFlagValue, 16, 16, 16, 16 };
+MySettings settings = { defaultFlagValue, 16, 3, 16, 3 };
 
 int isLoading() {
   return currentScreen == 0;
@@ -87,7 +87,7 @@ void setup() {
   if (loadedSettings.flag != defaultFlagValue) { // Check saved settings.
     EEPROM.put(0, settings); 
   } else {
-    settings = loadedSettings;
+    // settings = loadedSettings;
   }
 
   Serial.print("Settings flag: ");
@@ -116,15 +116,11 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(pumpA, HIGH);
-  digitalWrite(pumpB, HIGH);
-
-  delay(50);
   checkBtnStates();
 
   updatePumps();
 
   rerender();
 
-  delay(50);
+  delay(100);
 }

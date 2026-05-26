@@ -17,7 +17,7 @@ int isBtnBottomRightPressed() {
 void checkBtnStates() {
 
 
-  if (currentScreen == 1) {
+  if (currentScreen == 1 && !isPumping()) {
 
     long currentMs = millis();
 
