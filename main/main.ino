@@ -44,15 +44,26 @@ int currentScreen = 0;
 // Pumps states
 int pumpTickDuration = 50;
 bool isPumpAWorking = false;
+int pumpATotalTicks = 0;
 int pumpATicksLeft = 0;
 bool isPumpBWorking = false;
+int pumpBTotalTicks = 0;
 int pumpBTicksLeft = 0;
 
 // Loading states
 int loadingTime = 0;
 int loadingDelay = 25;
 
-MySettings settings = { defaultFlagValue, 10, 10, 10, 10 };
+// Buttons start press time
+unsigned long btnA1MsStart = 0;
+unsigned long btnA2MsStart = 0;
+unsigned long btnB1MsStart = 0;
+unsigned long btnB2MsStart = 0;
+
+// Button to edit
+int buttonToEdit;
+
+MySettings settings = { defaultFlagValue, 16, 16, 16, 16 };
 
 int isLoading() {
   return currentScreen == 0;
@@ -65,6 +76,10 @@ int isPumping() {
 void setup() {
   // Initialize serial communication at 9600 baud rate
   Serial.begin(9600);
+
+  digitalWrite(pumpA, HIGH);
+  digitalWrite(pumpB, HIGH);
+
 
   MySettings loadedSettings;
   EEPROM.get(0, loadedSettings);
@@ -101,25 +116,15 @@ void setup() {
 }
 
 void loop() {
-  if (!isLoading() && !isPumping()) {
-    checkBtnStates();
-  }
+  digitalWrite(pumpA, HIGH);
+  digitalWrite(pumpB, HIGH);
 
-  if(isPumping()){
-    if(pumpATicksLeft > 0){
-      pumpWater(pumpA);
-      pumpATicksLeft--;
-    }else{
-      isPumpAWorking = false;
-    }
-    if(pumpBTicksLeft > 0){
-      pumpWater(pumpB);
-      pumpBTicksLeft--;
-    }else{
-      isPumpBWorking = false;
-    }
-  }
+  delay(50);
+  checkBtnStates();
+
+  updatePumps();
 
   rerender();
-  delay(100);
+
+  delay(50);
 }
