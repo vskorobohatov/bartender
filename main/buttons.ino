@@ -148,9 +148,8 @@ void checkBtnStates() {
     }
 
     if (isBtnTopRightPressed()) {
+      settingsWereChanged = true;
       loadSavedSettings();
-      playSound(50);
-      delay(50);
       playSound(50);
     }
 
