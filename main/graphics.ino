@@ -49,59 +49,55 @@ byte* generateLoadingFrame() {
 }
 
 void renderPumpProcess() {
+  if (isPumpAWorking) {
+    renderSquare(pumpATicksLeft);
+  } else if (isPumpBWorking) {
+    renderSquare(pumpBTicksLeft);
+  }
+}
+
+void renderSquare(int totalCount) {
   const byte startX = 2;
   const byte startY = 2;
+  int drawn = 0;
+  int total = totalCount;
+  Serial.print(totalCount);
 
-  int totalTicks = 0;
-  int ticksLeft = 0;
 
-  if (isPumpAWorking) {
-    totalTicks = pumpATotalTicks;
-    ticksLeft = pumpATicksLeft;
-  } else if (isPumpBWorking) {
-    totalTicks = pumpBTotalTicks;
-    ticksLeft = pumpBTicksLeft;
+  for (byte x = 0; x < 4; x++) {
+    for (byte y = 0; y < 4; y++) {
+      if (drawn < total) {
+        screenBuffer[startY + y] |= (1 << (startX + x));
+      }
+      drawn++;
+    }
+  }
+}
+
+void renderButtonsIndicators() {
+  screenBuffer[0] = B01000010;
+  screenBuffer[7] = B01000010;
+
+  if (isBtnTopLeftPressed()) {
+    screenBuffer[7] = B00000010;
+  }
+  if (isBtnBottomLeftPressed()) {
+    screenBuffer[7] = B01000000;
   }
 
-  if (totalTicks > 0) {
-    int pixelsToDraw = (ticksLeft * 16 + totalTicks - 1) / totalTicks;
+  if (isBtnTopRightPressed()) {
+    screenBuffer[0] = B00000010;
+  }
 
-    if (pixelsToDraw > 16) pixelsToDraw = 16;
-    if (pixelsToDraw < 0) pixelsToDraw = 0;
-
-    int drawn = 0;
-
-    for (byte y = 0; y < 4; y++) {
-      for (byte x = 0; x < 4; x++) {
-        if (drawn < pixelsToDraw) {
-          screenBuffer[startY + y] |= (1 << (startX + x));
-        }
-        drawn++;
-      }
-    }
+  if (isBtnBottomRightPressed()) {
+    screenBuffer[0] = B01000000;
   }
 }
 
 void generateMainScreen() {
   clearScreen();
 
-  screenBuffer[0] = B01000010;
-  screenBuffer[7] = B01000010;
-
-  if (isBtnTopLeftPressed()) {
-    screenBuffer[0] = B01000000;
-  }
-  if (isBtnBottomLeftPressed()) {
-    screenBuffer[0] = B00000010;
-  }
-
-  if (isBtnTopRightPressed()) {
-    screenBuffer[7] = B01000000;
-  }
-
-  if (isBtnBottomRightPressed()) {
-    screenBuffer[7] = B00000010;
-  }
+  renderButtonsIndicators();
 
   if (isPumping()) {
     renderPumpProcess();
@@ -111,10 +107,20 @@ void generateMainScreen() {
 void generateEditScreen() {
   clearScreen();
 
-  screenBuffer[0] = B01000010;
-  screenBuffer[2] = B00111100;
-  screenBuffer[3] = B00111100;
-  screenBuffer[4] = B00111100;
-  screenBuffer[5] = B00111100;
-  screenBuffer[7] = B01000010;
+  renderButtonsIndicators();
+
+  switch (buttonToEdit) {
+    case 1:
+      renderSquare(settings.durationA1);
+      break;
+    case 2:
+      renderSquare(settings.durationA2);
+      break;
+    case 3:
+      renderSquare(settings.durationB1);
+      break;
+    case 4:
+      renderSquare(settings.durationB2);
+      break;
+  }
 }

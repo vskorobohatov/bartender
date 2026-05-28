@@ -62,15 +62,13 @@ unsigned long btnB2MsStart = 0;
 
 // Button to edit
 int buttonToEdit;
+bool settingsWereChanged = false;
+bool settingsWereDisplayed = false;
 
-MySettings settings = { defaultFlagValue, 16, 3, 16, 3 };
+MySettings settings = { defaultFlagValue, 15, 3, 15, 3 };
 
 int isLoading() {
   return currentScreen == 0;
-}
-
-int isPumping() {
-  return isPumpAWorking || isPumpBWorking;
 }
 
 void setup() {
@@ -80,15 +78,7 @@ void setup() {
   digitalWrite(pumpA, HIGH);
   digitalWrite(pumpB, HIGH);
 
-
-  MySettings loadedSettings;
-  EEPROM.get(0, loadedSettings);
-
-  if (loadedSettings.flag != defaultFlagValue) { // Check saved settings.
-    EEPROM.put(0, settings); 
-  } else {
-    // settings = loadedSettings;
-  }
+  loadSavedSettings();
 
   Serial.print("Settings flag: ");
   Serial.println(settings.flag);

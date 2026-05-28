@@ -1,3 +1,7 @@
+int isPumping() {
+  return isPumpAWorking || isPumpBWorking;
+}
+
 void updatePumps() {
   if (isPumping()) {
     if (pumpATicksLeft > 0) {
